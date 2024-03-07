@@ -1,0 +1,26 @@
+# Dependency directories
+node_modules/
+npm-debug.log
+
+# Environment variables file
+.env
+
+# Editor specific files
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Logs and generated files
+*.log
+logs
+*.pid
+*.seed
+*.pid.lock
+npm-debug.log*
+
+# Build files
+/build/
+.DS_Store

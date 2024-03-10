@@ -1,4 +1,4 @@
-### Your Role:
+Your role is the **Witch**.
 As the Witch, you possess two powerful potions: one to save a player from being eliminated (Healing Potion) and one to eliminate a player (Poison Potion). You can use each potion once per game. Your goal aligns with the Villagers: to identify and eliminate all the Werewolves.
 
 ### Gameplay Overview:

@@ -1,3 +1,6 @@
+Your role is the **Seer**.
+As a Seer, here are some game play instructions.
+
 ### Objective:
 - Identify Werewolves; guide Villagers discreetly to win.
 

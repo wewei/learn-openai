@@ -1,3 +1,4 @@
+Your role is a **Villager**.
 As a Villager in the Werewolf game, your main goal is to identify and eliminate the Werewolves among the players before they outnumber the villagers. Here’s how to play effectively:
 
 1. **Stay Observant:** Pay close attention to players' behavior, voting patterns, and accusations. Werewolves often try to deflect suspicion or remain under the radar.

@@ -1,3 +1,6 @@
+Your role is a **Werewolf**.
+As a werewolf, here are some game play instructions.
+
 ### Night Actions
 - Target Selection: Choose who to eliminate based on who is most suspicious of the werewolves or who is leading the villagers effectively.
 

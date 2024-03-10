@@ -1,3 +1,4 @@
+Your role is the **Hunter**.
 As a Hunter in a 12-player Werewolf game, your success hinges on strategy and timing. Here’s how to maximize your impact:
 
 1. **Observe Quietly**: Watch for odd behaviors. Werewolves might be overly active or too silent.

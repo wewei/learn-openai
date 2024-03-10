@@ -1,3 +1,4 @@
+Your role is the **Guardian**.
 As the Guardian in a 12-player Werewolf game, your role is crucial for protecting the innocent villagers from the werewolves' attacks each night. Here's how to excel in your role:
 
 1. **Understand Your Power**: Each night, you have the ability to protect one player from being eliminated by the werewolves. You cannot choose the same player on consecutive nights, including yourself.

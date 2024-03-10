@@ -44,15 +44,13 @@ export type Agent = {
 };
 
 export type GameRule<T> = {
-    init: (users: string[]) => { state: T; messages: ExtMessage[] };
+    init: (users: string[], send: (message: ExtMessage[]) => Promise<void>) => Promise<T>;
     next: (
         state: T,
         chat: (req: ChatRequest) => Promise<ChatResponse>,
-        form: (req: FormRequest) => Promise<FormResponse>
-    ) => Promise<{
-        state: T | null;
-        messages: ExtMessage[];
-    }>;
+        form: (req: FormRequest) => Promise<FormResponse>,
+        send: (message: ExtMessage[]) => Promise<void>,
+    ) => Promise<T | null>;
 };
 
 export async function play<T>(
@@ -67,25 +65,22 @@ export async function play<T>(
                 cache[audi].push({ user, content });
             });
         });
-        return Promise.all(Object.keys(cache).map(name => users[name].send(cache[name])));
+        return Promise.all(Object.keys(cache).map(name => users[name].send(cache[name]))).then(() => {});
     }
 
-    const { state, messages } = init(Object.keys(users));
+    const state = await init(Object.keys(users), deliverMessages);
     let stateCur: T | null = state;
 
-    await deliverMessages(messages);
-
     while (stateCur) {
-        const { state: stateNxt, messages } = await next(
+        stateCur = await next(
             stateCur,
             (req) =>
                 users[req.user].chat({
                     ...req,
                     audience: req.audience.filter((user) => user !== req.user),
                 }),
-            (req) => users[req.user].form(req)
+            (req) => users[req.user].form(req),
+            deliverMessages,
         );
-        stateCur = stateNxt;
-        deliverMessages(messages);
     }
 }

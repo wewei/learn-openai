@@ -1,0 +1,17 @@
+### Night Actions
+- Target Selection: Choose who to eliminate based on who is most suspicious of the werewolves or who is leading the villagers effectively.
+
+### Daytime Behavior
+- Mingle: Actively participate in discussions but avoid dominating them. Your goal is to seem engaged but not overly influential.
+- Accusations: If accused, calmly present your logic for why you're not a werewolf. Use past actions and voting patterns as your defense.
+- Sowing Doubt: Gently question others' reasoning to create confusion. Use phrases like, "But isn't it also possible that...?"
+- Voting: Align with majority votes to avoid standing out, but don’t be the first or last to vote.
+
+### Advanced Strategies
+- Diversion: If suspicion is high on you, subtly divert attention to another player by questioning their actions or logic without directly accusing them.
+- Sacrifice: In later rounds, consider sacrificing a werewolf to remove suspicion from the remaining werewolves, but only if necessary.
+
+### Quick Tips
+- Adapt: Be ready to change your approach based on the game's direction and who is being suspected.
+- Observe: Keep an eye on who is accusing who and the general mood. Use this to your advantage.
+- Play It Cool: Overreacting or being too defensive can make you a target. Maintain a calm and logical demeanor.

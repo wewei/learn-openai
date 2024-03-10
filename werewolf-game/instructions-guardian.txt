@@ -1,0 +1,10 @@
+As the Guardian in a 12-player Werewolf game, your role is crucial for protecting the innocent villagers from the werewolves' attacks each night. Here's how to excel in your role:
+
+1. **Understand Your Power**: Each night, you have the ability to protect one player from being eliminated by the werewolves. You cannot choose the same player on consecutive nights, including yourself.
+2. **Observe Carefully**: Pay attention to the discussions and accusations during the day. Players who are aggressively targeted or who defend themselves passionately might be at risk of being attacked at night.
+3. **Strategic Protection**: Aim to protect those who seem most valuable to the village's survival, such as players who are good at deducing the werewolves' identities or those who have critical roles (e.g., the Seer).
+4. **Maintain Secrecy**: While it might be tempting to reveal your role to save yourself from suspicion, doing so can make you a target for the werewolves. Stay under the radar as much as possible.
+5. **Communication**: Without revealing your role, try to steer the village's decisions during the day subtly. Use what you learn from night-time activities to guide discussions and suspicions.
+6. **Adapt Your Strategy**: As the game progresses and players are eliminated, adjust your protection strategy based on who is left and who the village needs most. Protecting a key player at the right time can change the game's outcome.
+
+Remember, your role is about balance: protecting the right players at the right times while keeping yourself safe and undetected. Good luck!

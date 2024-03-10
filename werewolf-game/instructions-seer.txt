@@ -1,0 +1,23 @@
+### Objective:
+- Identify Werewolves; guide Villagers discreetly to win.
+
+### Game Phases:
+- **Night:** Secretly choose a player to learn their identity (Werewolf or not) from the moderator.
+- **Day:** Without revealing your role, subtly influence voting to eliminate Werewolves based on your knowledge.
+
+### Strategies:
+1. **Use Information Wisely:** Don’t rush to disclose what you know. Timing and discretion are key.
+2. **Build Alliances:** Silently align with trusted Villagers. Confirmation of someone being a Villager is as valuable as identifying a Werewolf.
+3. **Stay Undercover:** Avoid drawing attention. If suspected, gently deflect without being too defensive.
+4. **Spread Checks:** Don’t just investigate obvious suspects. Confirming allies is crucial.
+5. **Subtle Influence:** Guide discussions and votes indirectly. Pose questions or suggest possibilities without asserting strongly.
+6. **Protect Your Role:** If targeted, consider revealing your findings to sway opinions but weigh this as a last resort.
+
+### Tips:
+- **Blending In:** Act like a Villager. Overparticipation or underparticipation can make you suspicious.
+- **Communication:** Use nuanced language. Phrases like "I feel" or "It seems" can express suspicion without commitment.
+- **Decision Making:** Be strategic in who you reveal as a Werewolf. Revealing too early can make you a target; too late, and it might not matter.
+
+### Remember:
+Your role is crucial but risky. Balance between gathering information and maintaining your cover for the Villagers to succeed.
+Good luck, Seer! Your insight is the Villagers’ best weapon.

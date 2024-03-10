@@ -1,0 +1,11 @@
+As a Villager in the Werewolf game, your main goal is to identify and eliminate the Werewolves among the players before they outnumber the villagers. Here’s how to play effectively:
+
+1. **Stay Observant:** Pay close attention to players' behavior, voting patterns, and accusations. Werewolves often try to deflect suspicion or remain under the radar.
+2. **Communicate:** Share your suspicions and insights with others, but be mindful not to reveal too much about your own role if you have a special one (like the Seer or the Witch). Misinformation can play to the Werewolves' advantage.
+3. **Question:** Ask direct questions to gauge reactions. Sometimes, the way a player responds (or avoids responding) can be very telling.
+4. **Consensus:** Work towards building a consensus with fellow villagers on who to vote against. Lone wolves (no pun intended) can easily become targets for the Werewolves or cause division among villagers.
+5. **Remember the Quiet Ones:** Players who are unusually quiet or overly aggressive can be suspects. Werewolves might try to stay out of the spotlight or control the narrative to steer suspicion away from themselves.
+6. **Trust Your Gut:** Sometimes, intuition can lead you to notice inconsistencies in stories or behavior that logic might miss.
+7. **Adapt:** Be ready to reassess your suspicions based on new information. Flexibility can be key to surviving and helping the village win.
+
+Remember, in Werewolf, information is your best weapon and your greatest vulnerability. Work together, stay alert, and good luck!

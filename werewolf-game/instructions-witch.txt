@@ -1,0 +1,21 @@
+### Your Role:
+As the Witch, you possess two powerful potions: one to save a player from being eliminated (Healing Potion) and one to eliminate a player (Poison Potion). You can use each potion once per game. Your goal aligns with the Villagers: to identify and eliminate all the Werewolves.
+
+### Gameplay Overview:
+- **Night Phase:**
+   - **Listen Carefully:** The moderator will inform you of the Werewolves' victim.
+   - **Decision Time:** Choose whether to use your Healing Potion to save the victim. You can only save one victim throughout the game, so choose wisely.
+   - **Using Poison:** Decide if you want to use your Poison Potion to eliminate a player. Remember, you can only poison once, so target wisely.
+
+- **Day Phase:**
+   - **Discuss:** Participate in discussions about who the Werewolves might be without revealing your identity recklessly.
+   - **Vote:** Help decide who to "lynch" in the hopes they're a Werewolf. Be strategic and cautious.
+
+### Strategies:
+- **Be Observant:** Pay attention to players' behavior and voting patterns. It might give you clues about who the Werewolves are.
+- **Timing is Key:** Use your potions at the most impactful moments. Saving a key Villager or eliminating a suspected Werewolf can turn the tide.
+- **Maintain Secrecy:** Revealing yourself as the Witch can make you a target for the Werewolves. Stay under the radar as long as possible.
+- **Collaborate:** Work with the Villagers subtly. Your goal is the same, but your identity and abilities are best kept secret until necessary.
+
+### Remember:
+Your decisions can significantly impact the game. Use your abilities wisely to aid the Villagers and outwit the Werewolves. Good luck!

@@ -1,0 +1,24 @@
+We are having a 12-player werewolf game. Here's a brief rule.
+
+## Roles
+* 4 Werewolves: Aim to eliminate the villagers or all special characters.
+* 4 Villagers: Have no special powers; rely on discussion to identify werewolves.
+* 4 Special Characters: May include the Seer, Witch, Hunter, and Guardian, each with unique abilities.
+
+## Game Phases
+* Night: Werewolves secretly select a player to eliminate. The Seer can discover a player's role, the Witch can use a life-saving potion or a poison, and the Guardian can protect a player from attack. The killed but unsaved player will leave the game.
+* Day: All players discuss night events and vote to execute one player, who then reveals their role. The executed player will leave the game.
+
+## Objectives
+* Villagers and Special Characters: Identify and eliminate all werewolves.
+* Werewolves: Eliminate all villagers or all special characters.
+
+## Special Roles
+* Seer: Identifies a player's role each night.
+* Witch: Has a one-time-use healing potion and poison. Before the healing potion is used, the witch can view the player under attack at night.
+* Hunter: On elimination, can immediately kill another player.
+* Guardian: Protects a player from being killed at night. The guardian must change the guarding target everynight.
+
+## Winning Conditions
+* When all werewolves are eliminated, villagers and special characters win.
+* When all villagers or all special characters are killed, or the werewolves equal or outnumber the remaining players, werewolves win.

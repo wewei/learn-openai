@@ -97,7 +97,6 @@ async function guardianRound(
             },
         ]);
 
-        console.log(guardPlayer);
         return guardPlayer;
     }
     return null;
@@ -166,9 +165,141 @@ async function werewolfRound(
         },
     ]);
 
-    console.log(`${votingWerewolf} selected to eliminate ${killingPlayer}.`);
-
     return killingPlayer;
+}
+
+async function witchRound(
+    {
+        livingWitch,
+        killingPlayer,
+        livingPlayers,
+        potionUsed,
+        poisonUsed,
+    }: {
+        livingWitch: string[],
+        killingPlayer: string,
+        livingPlayers: string[],
+        potionUsed: boolean,
+        poisonUsed: boolean,
+    },
+    { form, send }: GameRuleCallbacks
+): Promise<{ healed: boolean; poisonedPlayer: string | null }> {
+    const witch = livingWitch[0];
+
+    if (!witch) {
+        return { healed: false, poisonedPlayer: null };
+    }
+
+    if (!potionUsed && !poisonUsed) {
+        const { healed, player: poisonedPlayer = null } = await form(
+            witch,
+            `The player ${killingPlayer} is being killed, do you want to save him/her with your only potion? The living players or ${livingPlayers.join(
+                ", "
+            )}, do you want to eliminate any of them with your only poison? You need make your decisions to maximize the villagers and the special characters chances to win.`,
+            {
+                name: "potionAndPoison",
+                description: "Heal a player and optionally poison a player",
+                type: {
+                    type: "object",
+                    properties: {
+                        healed: {
+                            type: "boolean",
+                            description:
+                                "Whether to heal the player with potion",
+                        },
+                        player: {
+                            type: "string",
+                            description: "The player to eliminate with poison",
+                            enum: livingPlayers,
+                        },
+                    },
+                    required: ["heal"],
+                },
+            }
+        );
+
+        send([
+            {
+                audiences: livingWitch,
+                user: null,
+                content: `${
+                    healed
+                        ? `You saved player ${killingPlayer}`
+                        : `You didn't save player ${killingPlayer}`
+                }, ${
+                    poisonedPlayer
+                        ? `and you poisoned ${poisonedPlayer}`
+                        : "and you didn't use the poison."
+                }.`,
+            },
+        ]);
+        return { healed, poisonedPlayer };
+    }
+
+    if (!potionUsed) {
+        const { healed } = await form(
+            witch,
+            `The player ${killingPlayer} is being killed, do you want to save him/her with your only potion? You need make your decisions to maximize the villagers and the special characters chances to win.`,
+            {
+                name: "potion",
+                description: "Heal a player.",
+                type: {
+                    type: "object",
+                    properties: {
+                        healed: {
+                            type: "boolean",
+                            description:
+                                "Whether to heal the player with potion",
+                        },
+                    },
+                    required: ["heal"],
+                },
+            }
+        );
+
+        send([
+            {
+                audiences: livingWitch,
+                user: null,
+                content: healed ? `You saved player ${killingPlayer}.` : `You didn't save player ${killingPlayer}.`
+            },
+        ]);
+        return { healed, poisonedPlayer: null };
+    }
+
+    if (!poisonUsed) {
+        const { player: poisonedPlayer = null } = await form(
+            witch,
+            `The living players or ${livingPlayers.join(
+                ", "
+            )}, do you want to eliminate any of them with your only poison? You need make your decisions to maximize the villagers and the special characters chances to win.`,
+            {
+                name: "poison",
+                description: "Optionally poison a player",
+                type: {
+                    type: "object",
+                    properties: {
+                        player: {
+                            type: "string",
+                            description: "The player to eliminate with poison",
+                            enum: livingPlayers,
+                        },
+                    },
+                },
+            }
+        );
+
+        send([
+            {
+                audiences: livingWitch,
+                user: null,
+                content: poisonedPlayer ? `and you poisoned ${poisonedPlayer}` : "and you didn't use the poison.",
+            },
+        ]);
+        return { healed: false, poisonedPlayer };
+    }
+
+    return { healed: false, poisonedPlayer: null };
 }
 
 export async function werewolfGame(): Promise<GameRule<GameState>> {
@@ -268,7 +399,8 @@ export async function werewolfGame(): Promise<GameRule<GameState>> {
 
             return state;
         },
-        next: async (state, { chat, form, send }) => {
+        next: async (state, callbacks) => {
+            const { chat, form, send } = callbacks;
             const allPlayers = Object.keys(state.roles);
             const livingWerewolfs = livingPlayersWithRole("Werewolf", state);
             const livingVillagers = livingPlayersWithRole("Villager", state);
@@ -318,16 +450,35 @@ export async function werewolfGame(): Promise<GameRule<GameState>> {
 
             // Night
             // 1. Guardian round
-            const guardPlayer: string | null = await guardianRound(
+            const guardPlayer = await guardianRound(
                 { livingGuardian, livingPlayers, lastGuard: state.lastGuard },
-                { form, chat, send }
+                callbacks
             );
+            console.log(`${guardPlayer} is guarded by ${livingGuardian.join(', ')}`);
 
             // 2. Werewolf round
-            const killingPlayer: string = await werewolfRound(
+            const killingPlayer = await werewolfRound(
                 { livingPlayers, livingWerewolfs },
-                { form, chat, send }
+                callbacks
             );
+            console.log(`${killingPlayer} is being killed by ${livingWerewolfs.join(', ')}`);
+
+            // 3. Witch round
+            const {
+                healed,
+                poisonedPlayer,
+            } = await witchRound(
+                {
+                    livingWitch,
+                    killingPlayer,
+                    livingPlayers,
+                    potionUsed: state.potionUsed,
+                    poisonUsed: state.poisonUsed,
+                },
+                callbacks
+            );
+
+            console.log(`${livingWitch} choose to ${healed ? "heal" : "not heal"} ${killingPlayer}, and use poison on ${poisonedPlayer}`);
             return null;
         },
     };

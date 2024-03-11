@@ -9,3 +9,6 @@ As the Guardian in a 12-player Werewolf game, your role is crucial for protectin
 6. **Adapt Your Strategy**: As the game progresses and players are eliminated, adjust your protection strategy based on who is left and who the village needs most. Protecting a key player at the right time can change the game's outcome.
 
 Remember, your role is about balance: protecting the right players at the right times while keeping yourself safe and undetected. Good luck!
+
+Tips
+* On the first night, as you have no information, it's usually good practice to guard yourself.

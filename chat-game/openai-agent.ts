@@ -77,7 +77,7 @@ export function openaiAgent(
                     throw e;
                 });
 
-            console.log(JSON.stringify(res, null, 2));
+            // console.log(JSON.stringify(res, null, 2));
             const funcCall = res.choices[0].message?.toolCalls[0]?.function;
 
             if (funcCall && funcCall.name === form.name) {

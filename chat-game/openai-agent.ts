@@ -38,15 +38,15 @@ export function openaiAgent(
                 role: "system",
                 content: `The audiences are ${audiences.join(", ")}.`,
             });
-            oaiMessages.forEach((message) =>
-                console.log(`[${name}] {debug}`, message)
-            );
+            // oaiMessages.forEach((message) =>
+            //     console.log(`[${name}] {debug}`, message)
+            // );
             const res = await client.getChatCompletions(
                 deploymentId,
                 oaiMessages
             );
             const content = res.choices[0]?.message?.content || "";
-            console.log(`[${name}] {debug} >>>`, content);
+            // console.log(`[${name}] {debug} >>>`, content);
             return content;
         },
         form: async (instructions, form) => {
@@ -54,9 +54,9 @@ export function openaiAgent(
                 convertToOpenaiMessage(name)
             );
             oaiMessages.push({ role: "system", content: instructions });
-            oaiMessages.forEach((message) =>
-                console.log(`[${name}] {debug}`, message)
-            );
+            // oaiMessages.forEach((message) =>
+            //     console.log(`[${name}] {debug}`, message)
+            // );
 
             const res = await client
                 .getChatCompletions(deploymentId, oaiMessages, {

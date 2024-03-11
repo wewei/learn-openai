@@ -39,16 +39,16 @@ export type ExtMessage = Message & {
 export type Agent = {
     init: () => Promise<void>;
     send: (messages: Message[]) => Promise<void>;
-    chat: (req: ChatRequest) => Promise<ChatResponse>;
-    form: (req: FormRequest) => Promise<FormResponse>;
+    chat: (instructions: string, audiences: string[]) => Promise<string>;
+    form: (instructions: string, form: Form) => Promise<any>;
 };
 
 export type GameRule<T> = {
     init: (users: string[], send: (message: ExtMessage[]) => Promise<void>) => Promise<T>;
     next: (
         state: T,
-        chat: (req: ChatRequest) => Promise<ChatResponse>,
-        form: (req: FormRequest) => Promise<FormResponse>,
+        chat: (user: string, instructions: string, audiences: string[]) => Promise<string>,
+        form: (user: string, instructions: string, form: Form) => Promise<any>,
         send: (message: ExtMessage[]) => Promise<void>,
     ) => Promise<T | null>;
 };
@@ -74,12 +74,8 @@ export async function play<T>(
     while (stateCur) {
         stateCur = await next(
             stateCur,
-            (req) =>
-                users[req.user].chat({
-                    ...req,
-                    audience: req.audience.filter((user) => user !== req.user),
-                }),
-            (req) => users[req.user].form(req),
+            (user, instructions, audiences) => users[user].chat(instructions, audiences.filter((u) => u !== user)),
+            (user, instructions, form) => users[user].form(instructions, form),
             deliverMessages,
         );
     }

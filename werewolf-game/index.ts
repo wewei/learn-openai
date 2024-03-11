@@ -209,28 +209,29 @@ export async function werewolfGame(): Promise<GameRule<GameState>> {
                 },
             ]);
             for (let i = 1; i < shuffleWerewolfs.length; i += 1) {
-                const name = shuffleWerewolfs[i];
-                const res = await chat({
-                    type: "Chat",
-                    user: name,
-                    audience: shuffleWerewolfs,
-                    instructions: `Please suggest which player you want to eliminate for this round.`,
-                });
-                await send([{
-                    user: name,
-                    content: res.content,
-                    audiences: livingWerewolfs,
-                }]);
+                const user = shuffleWerewolfs[i];
+                const content = await chat(
+                    user,
+                    `Please suggest which player you want to eliminate for this round.`,
+                    shuffleWerewolfs
+                );
+                await send([
+                    {
+                        user,
+                        content,
+                        audiences: livingWerewolfs,
+                    },
+                ]);
             }
 
-            const { value } = await form({
-                type: "Form",
-                user: votingWerewolf,
-                form: {
-                    name: 'eliminate',
-                    description: 'To eliminate a player',
+            const { value } = await form(
+                votingWerewolf,
+                "Please select the player you want to eliminate to maximum your werewolf camp's chance to win based on the conversation.",
+                {
+                    name: "eliminate",
+                    description: "To eliminate a player",
                     type: {
-                        type: 'object',
+                        type: "object",
                         properties: {
                             player: {
                                 description: "The player to be eliminated",
@@ -238,18 +239,18 @@ export async function werewolfGame(): Promise<GameRule<GameState>> {
                                 enum: livingPlayers,
                             },
                         },
-                        required: ['player'],
+                        required: ["player"],
                     },
-                },
-                instructions:
-                    "Please select the player you want to eliminate to maximum your werewolf camp's chance to win based on the conversation.",
-            });
+                }
+            );
 
-            await send([{
-                audiences: livingWerewolfs,
-                user: null,
-                content: `${votingWerewolf} selected to eliminate ${value.player}.`,
-            }]);
+            await send([
+                {
+                    audiences: livingWerewolfs,
+                    user: null,
+                    content: `${votingWerewolf} selected to eliminate ${value.player}.`,
+                },
+            ]);
 
             return null;
         },

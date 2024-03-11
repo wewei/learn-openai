@@ -29,14 +29,14 @@ export function openaiAgent(
         send: async (msg: Message[]) => {
             messages.push(...msg);
         },
-        chat: async (request) => {
+        chat: async (instructions, audiences) => {
             const oaiMessages: ChatRequestMessage[] = messages.map(
                 convertToOpenaiMessage(name)
             );
-            oaiMessages.push({ role: "system", content: request.instructions });
+            oaiMessages.push({ role: "system", content: instructions });
             oaiMessages.push({
                 role: "system",
-                content: `The audiences are ${request.audience.join(", ")}.`,
+                content: `The audiences are ${audiences.join(", ")}.`,
             });
             oaiMessages.forEach((message) =>
                 console.log(`[${name}] {debug}`, message)
@@ -47,27 +47,27 @@ export function openaiAgent(
             );
             const content = res.choices[0]?.message?.content || "";
             console.log(`[${name}] {debug} >>>`, content);
-            return { request, content };
+            return content;
         },
-        form: async (request) => {
+        form: async (instructions, form) => {
             const oaiMessages: ChatRequestMessage[] = messages.map(
                 convertToOpenaiMessage(name)
             );
-            oaiMessages.push({ role: "system", content: request.instructions });
+            oaiMessages.push({ role: "system", content: instructions });
             oaiMessages.forEach((message) =>
                 console.log(`[${name}] {debug}`, message)
             );
 
             const res = await client
                 .getChatCompletions(deploymentId, oaiMessages, {
-                    toolChoice: { type: 'function', function: { name: request.form.name } },
+                    toolChoice: { type: 'function', function: { name: form.name } },
                     tools: [
                         {
                             type: "function",
                             function: {
-                                name: request.form.name,
-                                description: request.form.description,
-                                parameters: request.form.type,
+                                name: form.name,
+                                description: form.description,
+                                parameters: form.type,
                             },
                         },
                     ],
@@ -80,10 +80,10 @@ export function openaiAgent(
             console.log(JSON.stringify(res, null, 2));
             const funcCall = res.choices[0].message?.toolCalls[0]?.function;
 
-            if (funcCall && funcCall.name === request.form.name) {
+            if (funcCall && funcCall.name === form.name) {
                 const value = JSON.parse(funcCall.arguments);
                 if (value) {
-                    return { request, value };
+                    return value;
                 }
             }
 

@@ -1,5 +1,4 @@
-import { ChatRequestMessage, OpenAIClient } from "@azure/openai";
-import { Agent, GameRule, Message } from "../chat-game";
+import { GameRule } from "../chat-game";
 
 export function roundChat(): GameRule<{
     users: string[],
@@ -12,12 +11,7 @@ export function roundChat(): GameRule<{
         },
         next: async ({ users, index }, chat, form, send) => {
             const user = users[index];
-            const { content } = await chat({
-                type: "Chat",
-                user,
-                instructions: "Your turn to speak.",
-                audience: users,
-            });
+            const content = await chat(user, "Your turn to speak.", users);
             await send([{ user, content, audiences: users }]);
             return { users, index: (index + 1) % users.length };
         },

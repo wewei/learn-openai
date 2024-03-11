@@ -11,22 +11,20 @@ export function consoleAgent(name: string, rl: readline.Interface): Agent {
                 }
             });
         },
-        chat: async (request) => {
-            const { audience, instructions } = request;
+        chat: async (instructions, audiences) => {
             rl.write(`[${name}] Instructions: ${instructions}\n`);
-            rl.write(`[${name}] Audience: ${audience.join(", ")}\n`);
+            rl.write(`[${name}] Audience: ${audiences.join(", ")}\n`);
             return new Promise((resolve) => {
                 rl.question(`[${name}]: `, (content) => {
-                    resolve({ request, content });
+                    resolve(content);
                 });
             });
         },
-        form: async (request) => {
-            const { instructions } = request;
+        form: async (instructions, form) => {
             rl.write(`[${name}] Instructions: ${instructions}\n`);
             return new Promise((resolve) => {
                 rl.question(`[${name}]: `, (content) => {
-                    resolve({ request, value: content });
+                    resolve(content);
                 });
             });
         },

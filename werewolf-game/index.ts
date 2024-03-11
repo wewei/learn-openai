@@ -1,7 +1,6 @@
 import { resolve } from "path";
 import { readFile } from "fs/promises";
-import { ExtMessage, GameRule } from "../chat-game";
-import { Type, tyString, tyUnit } from "../chat-game/types";
+import { GameRule } from "../chat-game";
 
 export type Role =
     | "Villager"
@@ -49,19 +48,6 @@ function livingPlayersWithRole(
     return Object.keys(roles).filter(
         (name) => roles[name] === role && !killed[name]
     );
-}
-
-function makeEnum(values: string[]): Type {
-    return {
-        ctor: "Union",
-        fragments: values.reduce((m, name) => {
-            m[name] = {
-                description: `User ${name}`,
-                type: tyUnit,
-            };
-            return m;
-        }, {} as Record<string, { description: string; type: Type }>),
-    };
 }
 
 export async function werewolfGame(): Promise<GameRule<GameState>> {
@@ -237,20 +223,34 @@ export async function werewolfGame(): Promise<GameRule<GameState>> {
                 }]);
             }
 
-            const { value: killingPlayer } = await form({
+            const { value } = await form({
                 type: "Form",
                 user: votingWerewolf,
-                valueType: makeEnum(livingPlayers),
+                form: {
+                    name: 'eliminate',
+                    description: 'To eliminate a player',
+                    type: {
+                        type: 'object',
+                        properties: {
+                            player: {
+                                description: "The player to be eliminated",
+                                type: "string",
+                                enum: livingPlayers,
+                            },
+                        },
+                        required: ['player'],
+                    },
+                },
                 instructions:
-                    "Please select the player you want to eliminate to maximum your werewolf camp's chance to win.",
+                    "Please select the player you want to eliminate to maximum your werewolf camp's chance to win based on the conversation.",
             });
 
             await send([{
                 audiences: livingWerewolfs,
                 user: null,
-                content: `${votingWerewolf} selected to eliminate ${killingPlayer}.`,
+                content: `${votingWerewolf} selected to eliminate ${value.player}.`,
             }]);
-        
+
             return null;
         },
     };

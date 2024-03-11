@@ -1,4 +1,4 @@
-import { Type } from "./types";
+import { Form } from "./form";
 
 export type ChatRequest = {
     type: 'Chat';
@@ -16,7 +16,7 @@ export type FormRequest = {
     type: 'Form';
     user: string;
     instructions: string;
-    valueType: Type;
+    form: Form;
 };
 
 export type FormResponse = {

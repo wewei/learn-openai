@@ -1,6 +1,5 @@
 import { ChatRequestMessage, OpenAIClient } from "@azure/openai";
 import { Agent, Message } from ".";
-import { Type, tyNumber, tyString } from "./types";
 
 function convertToOpenaiMessage(name: string) {
     return (message: Message): ChatRequestMessage => {
@@ -14,20 +13,6 @@ function convertToOpenaiMessage(name: string) {
         }
         return { content, role: "user", name: user };
     };
-}
-
-function getParameterType(type: Type): Record<string, any> {
-    if (type === tyString) {
-        return { type: "string" };
-    }
-    if (type === tyNumber) {
-        return { type: "number" };
-    }
-    if (typeof type === "object" && type.ctor === "Union") {
-        return { type: "string", enum: Object.keys(type.fragments) };
-    }
-    console.log("error value type");
-    throw Error("Unsupported value type");
 }
 
 export function openaiAgent(
@@ -75,23 +60,14 @@ export function openaiAgent(
 
             const res = await client
                 .getChatCompletions(deploymentId, oaiMessages, {
-                    toolChoice: "auto",
+                    toolChoice: { type: 'function', function: { name: request.form.name } },
                     tools: [
                         {
                             type: "function",
                             function: {
-                                name: "answer",
-                                description:
-                                    "Give the answer based on the instruction",
-                                parameters: {
-                                    type: "object",
-                                    properties: {
-                                        value: getParameterType(
-                                            request.valueType
-                                        ),
-                                    },
-                                    required: ["value"],
-                                },
+                                name: request.form.name,
+                                description: request.form.description,
+                                parameters: request.form.type,
                             },
                         },
                     ],
@@ -104,10 +80,10 @@ export function openaiAgent(
             console.log(JSON.stringify(res, null, 2));
             const funcCall = res.choices[0].message?.toolCalls[0]?.function;
 
-            if (funcCall && funcCall.name === "answer") {
-                const result = JSON.parse(funcCall.arguments);
-                if (result) {
-                    return { request, value: result.value };
+            if (funcCall && funcCall.name === request.form.name) {
+                const value = JSON.parse(funcCall.arguments);
+                if (value) {
+                    return { request, value };
                 }
             }
 

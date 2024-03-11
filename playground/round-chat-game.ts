@@ -5,11 +5,11 @@ export function roundChat(): GameRule<{
     index: number,
 }> {
     return {
-        init: async (users, send) => {
+        init: async (users, { send }) => {
             await send([{ audiences: users, content: 'Welcome to join the chat!', user: null }]);
             return { users, index: 0 };
         },
-        next: async ({ users, index }, chat, form, send) => {
+        next: async ({ users, index }, { chat, send }) => {
             const user = users[index];
             const content = await chat(user, "Your turn to speak.", users);
             await send([{ user, content, audiences: users }]);

@@ -1,6 +1,6 @@
 import { resolve } from "path";
 import { readFile } from "fs/promises";
-import { ExtMessage, GameRule } from "../chat-game";
+import { ExtMessage, GameRule, GameRuleCallbacks } from "../chat-game";
 import { Form } from "../chat-game/form";
 
 export type Role =
@@ -64,8 +64,7 @@ async function guardianRound(
         livingPlayers: string[];
         lastGuard: string | null;
     },
-    form: (user: string, instructions: string, form: Form) => Promise<any>,
-    send: (messages: ExtMessage[]) => Promise<void>
+    { form, send }: GameRuleCallbacks
 ): Promise<string | null> {
     if (livingGuardian[0]) {
         const { player: guardPlayer } = await form(
@@ -104,6 +103,74 @@ async function guardianRound(
     return null;
 }
 
+async function werewolfRound(
+    {
+        livingWerewolfs,
+        livingPlayers,
+    }: {
+        livingWerewolfs: string[];
+        livingPlayers: string[];
+    },
+    { chat, form, send }: GameRuleCallbacks
+): Promise<string> {
+    const shuffleWerewolfs = shuffleArray(livingWerewolfs);
+    const votingWerewolf = shuffleWerewolfs[0];
+    await send([
+        {
+            user: null,
+            content: `The current living werewolfs are ${livingWerewolfs}, the current living players are ${livingPlayers}. Werewolf camp, please discuss and decide which player to elimiate this round. Please make comments one by one, and ${votingWerewolf} will make the final call.`,
+            audiences: shuffleWerewolfs,
+        },
+    ]);
+    for (let i = 1; i < shuffleWerewolfs.length; i += 1) {
+        const user = shuffleWerewolfs[i];
+        const content = await chat(
+            user,
+            `Please suggest which player you want to eliminate for this round.`,
+            shuffleWerewolfs
+        );
+        await send([
+            {
+                user,
+                content,
+                audiences: livingWerewolfs,
+            },
+        ]);
+    }
+
+    const { player: killingPlayer } = await form(
+        votingWerewolf,
+        "Please select the player you want to eliminate to maximum your werewolf camp's chance to win based on the conversation.",
+        {
+            name: "eliminate",
+            description: "To eliminate a player",
+            type: {
+                type: "object",
+                properties: {
+                    player: {
+                        description: "The player to be eliminated",
+                        type: "string",
+                        enum: livingPlayers,
+                    },
+                },
+                required: ["player"],
+            },
+        }
+    );
+
+    await send([
+        {
+            audiences: livingWerewolfs,
+            user: null,
+            content: `${votingWerewolf} selected to eliminate ${killingPlayer}.`,
+        },
+    ]);
+
+    console.log(`${votingWerewolf} selected to eliminate ${killingPlayer}.`);
+
+    return killingPlayer;
+}
+
 export async function werewolfGame(): Promise<GameRule<GameState>> {
     const [
         strGameRules,
@@ -123,16 +190,8 @@ export async function werewolfGame(): Promise<GameRule<GameState>> {
         textInstructionsVillager,
     ]);
 
-    // console.log(strGameRules);
-    // console.log(strInstructionsWerewolf);
-    // console.log(strInstructionsSeer);
-    // console.log(strInstructionsWitch);
-    // console.log(strInstructionsHunter);
-    // console.log(strInstructionsGuardian);
-    // console.log(strInstructionsVillager);
-
     return {
-        init: async (users, send) => {
+        init: async (users, { send }) => {
             const state: GameState = {
                 killed: {},
                 roles: {},
@@ -209,7 +268,7 @@ export async function werewolfGame(): Promise<GameRule<GameState>> {
 
             return state;
         },
-        next: async (state, chat, form, send) => {
+        next: async (state, { chat, form, send }) => {
             const allPlayers = Object.keys(state.roles);
             const livingWerewolfs = livingPlayersWithRole("Werewolf", state);
             const livingVillagers = livingPlayersWithRole("Villager", state);
@@ -261,70 +320,14 @@ export async function werewolfGame(): Promise<GameRule<GameState>> {
             // 1. Guardian round
             const guardPlayer: string | null = await guardianRound(
                 { livingGuardian, livingPlayers, lastGuard: state.lastGuard },
-                form,
-                send
+                { form, chat, send }
             );
 
             // 2. Werewolf round
-            const shuffleWerewolfs = shuffleArray(livingWerewolfs);
-            const votingWerewolf = shuffleWerewolfs[0];
-            await send([
-                {
-                    user: null,
-                    content: `The current living werewolfs are ${livingWerewolfs}, the current living players are ${livingPlayers}. Werewolf camp, please discuss and decide which player to elimiate this round. Please make comments one by one, and ${votingWerewolf} will make the final call.`,
-                    audiences: shuffleWerewolfs,
-                },
-            ]);
-            for (let i = 1; i < shuffleWerewolfs.length; i += 1) {
-                const user = shuffleWerewolfs[i];
-                const content = await chat(
-                    user,
-                    `Please suggest which player you want to eliminate for this round.`,
-                    shuffleWerewolfs
-                );
-                await send([
-                    {
-                        user,
-                        content,
-                        audiences: livingWerewolfs,
-                    },
-                ]);
-            }
-
-            const killingPlayer: string = (
-                await form(
-                    votingWerewolf,
-                    "Please select the player you want to eliminate to maximum your werewolf camp's chance to win based on the conversation.",
-                    {
-                        name: "eliminate",
-                        description: "To eliminate a player",
-                        type: {
-                            type: "object",
-                            properties: {
-                                player: {
-                                    description: "The player to be eliminated",
-                                    type: "string",
-                                    enum: livingPlayers,
-                                },
-                            },
-                            required: ["player"],
-                        },
-                    }
-                )
-            ).player;
-
-            await send([
-                {
-                    audiences: livingWerewolfs,
-                    user: null,
-                    content: `${votingWerewolf} selected to eliminate ${killingPlayer}.`,
-                },
-            ]);
-
-            console.log(
-                `${votingWerewolf} selected to eliminate ${killingPlayer}.`
+            const killingPlayer: string = await werewolfRound(
+                { livingPlayers, livingWerewolfs },
+                { form, chat, send }
             );
-
             return null;
         },
     };

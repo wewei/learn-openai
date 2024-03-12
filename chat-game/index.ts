@@ -1,32 +1,5 @@
 import { Form } from "./form";
 
-// export type ChatRequest = {
-//     type: "Chat";
-//     user: string;
-//     instructions: string;
-//     audience: string[];
-// };
-
-// export type ChatResponse = {
-//     request: ChatRequest;
-//     content: string;
-// };
-
-// export type FormRequest = {
-//     type: "Form";
-//     user: string;
-//     instructions: string;
-//     form: Form;
-// };
-
-// export type FormResponse = {
-//     request: FormRequest;
-//     value: any;
-// };
-
-// export type Request = ChatRequest | FormRequest;
-// export type Response = ChatResponse | FormResponse;
-
 export type Message = {
     user: string | null;
     content: string;

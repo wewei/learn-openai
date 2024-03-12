@@ -67,7 +67,11 @@ export function openaiAgent(
                             function: {
                                 name: form.name,
                                 description: form.description,
-                                parameters: form.type,
+                                parameters: {
+                                    type: 'object',
+                                    properties: form.properties,
+                                    require: form.required,
+                                },
                             },
                         },
                     ],

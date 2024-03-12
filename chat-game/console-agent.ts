@@ -23,12 +23,12 @@ export function consoleAgent(name: string, rl: readline.Interface): Agent {
         },
         form: async (instructions, form) => {
             rl.write(`[${name}] Instructions: ${instructions}\n`);
-            const { properties = {} } = form.type;
+            const properties = form.properties;
             const result: Record<string, any> = {};
             for (const key in properties) {
                 do {
                     result[key] = await question(`[${name}] <${key}>: `);
-                } while (!validate(result[key], properties[key] as JSONSchema7).valid);
+                } while (!validate(result[key], properties[key]).valid);
             }
             return result;
         },

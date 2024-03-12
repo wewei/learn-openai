@@ -77,16 +77,14 @@ async function guardianRound(
             {
                 name: "guard",
                 description: "To guard a player.",
-                type: {
-                    type: "object",
-                    properties: {
-                        player: {
-                            description: "The player to be guard.",
-                            type: "string",
-                            enum: livingPlayers.filter((p) => p !== lastGuard),
-                        },
+                properties: {
+                    player: {
+                        description: "The player to be guard.",
+                        type: "string",
+                        enum: livingPlayers.filter((p) => p !== lastGuard),
                     },
                 },
+                required: ['player'],
             }
         );
         await send([
@@ -143,17 +141,14 @@ async function werewolfRound(
         {
             name: "eliminate",
             description: "To eliminate a player",
-            type: {
-                type: "object",
-                properties: {
-                    player: {
-                        description: "The player to be eliminated",
-                        type: "string",
-                        enum: livingPlayers,
-                    },
+            properties: {
+                player: {
+                    description: "The player to be eliminated",
+                    type: "string",
+                    enum: livingPlayers,
                 },
-                required: ["player"],
             },
+            required: ["player"],
         }
     );
 
@@ -199,22 +194,19 @@ async function witchRound(
             {
                 name: "potionAndPoison",
                 description: "Heal a player and optionally poison a player",
-                type: {
-                    type: "object",
-                    properties: {
-                        healed: {
-                            type: "boolean",
-                            description:
-                                "Whether to heal the player with potion",
-                        },
-                        player: {
-                            type: "string",
-                            description: "The player to eliminate with poison",
-                            enum: livingPlayers,
-                        },
+                properties: {
+                    healed: {
+                        type: "boolean",
+                        description:
+                            "Whether to heal the player with potion",
                     },
-                    required: ["heal"],
+                    player: {
+                        type: "string",
+                        description: "The player to eliminate with poison",
+                        enum: livingPlayers,
+                    },
                 },
+                required: ["heal"],
             }
         );
 
@@ -243,17 +235,14 @@ async function witchRound(
             {
                 name: "potion",
                 description: "Heal a player.",
-                type: {
-                    type: "object",
-                    properties: {
-                        healed: {
-                            type: "boolean",
-                            description:
-                                "Whether to heal the player with potion",
-                        },
+                properties: {
+                    healed: {
+                        type: "boolean",
+                        description:
+                            "Whether to heal the player with potion",
                     },
-                    required: ["heal"],
                 },
+                required: ["heal"],
             }
         );
 
@@ -276,16 +265,14 @@ async function witchRound(
             {
                 name: "poison",
                 description: "Optionally poison a player",
-                type: {
-                    type: "object",
-                    properties: {
-                        player: {
-                            type: "string",
-                            description: "The player to eliminate with poison",
-                            enum: livingPlayers,
-                        },
+                properties: {
+                    player: {
+                        type: "string",
+                        description: "The player to eliminate with poison",
+                        enum: livingPlayers,
                     },
                 },
+                required: [],
             }
         );
 
